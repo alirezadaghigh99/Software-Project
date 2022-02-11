@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.generics import ListAPIView
 
-from .models import UserModel
+from .models import UserModel, Visit
 
 
 class UserSignUpSerializer(serializers.ModelSerializer):
@@ -37,3 +37,29 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ['name', 'id', 'username', 'role']
+
+
+class VisitSerializer(serializers.ModelSerializer):
+    doctor_name = serializers.PrimaryKeyRelatedField(queryset=UserModel.objects.all(),source='doctor', write_only=True)
+    patient_name = serializers.PrimaryKeyRelatedField(queryset=UserModel.objects.all(),source='patient', write_only=True)
+
+    class Meta:
+        model = Visit
+        fields = ['doctor_name', 'patient_name', 'time']
+
+    def validate(self, attrs):
+        doctor= attrs.get('doctor')
+        patient= attrs.get('patient')
+        if doctor.role != 'doctor':
+            raise serializers.ValidationError('the user is not doctor')
+        if patient.role != 'patient':
+            raise serializers.ValidationError('the user is not patient')
+        return attrs
+
+    def save(self, **kwargs):
+        doctor = self.validated_data['doctor']
+        patient = self.validated_data['patient']
+        time = self.validated_data['time']
+        visit = Visit(time=time, doctor=doctor, patient=patient)
+        visit.save()
+        return visit

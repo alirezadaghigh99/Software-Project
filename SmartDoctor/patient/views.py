@@ -23,6 +23,17 @@ class SignUpPatient(APIView):
         return Response({"username": user.username}, status=status.HTTP_201_CREATED)
 
 
+class AddVisitView(APIView):
+    serializer_class = VisitSerializer
+    queryset = UserModel.objects.all()
+
+    def post(self, request):
+        visit_serializer = self.serializer_class(data=request.data)
+        visit_serializer.is_valid(raise_exception=True)
+        visit = visit_serializer.save()
+        return Response({"time": visit.time}, status=status.HTTP_201_CREATED)
+
+
 class AuthorizeView(APIView):
     authentication_classes = [JWTAuthentication]
 

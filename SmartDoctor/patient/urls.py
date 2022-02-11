@@ -11,5 +11,6 @@ urlpatterns = [
     path('signin/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('authorize/', AuthorizeView.as_view(), name='authorize'),
     path('doctor-list/', ListDoctorAPIView.as_view(), name='doctor'),
+    path('create_visit/', AddVisitView.as_view(), name='visit'),
 
 ]
