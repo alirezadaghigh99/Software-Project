@@ -8,7 +8,7 @@ class UserRole(models.TextChoices):
     DOCTOR = 'doctor', 'Doctor'
 
 
-class Patient(AbstractUser):
+class UserModel(AbstractUser):
     role = models.CharField(max_length=10, choices=UserRole.choices, default=UserRole.PATIENT)
 
     @property

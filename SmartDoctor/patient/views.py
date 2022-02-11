@@ -5,10 +5,12 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import *
+from .models import *
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import permissions
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 class SignUpPatient(APIView):
@@ -18,7 +20,7 @@ class SignUpPatient(APIView):
         signup_serializer = self.serializer_class(data=request.data)
         signup_serializer.is_valid(raise_exception=True)
         user = signup_serializer.save()
-        return Response({"username": user.username},status=status.HTTP_201_CREATED)
+        return Response({"username": user.username}, status=status.HTTP_201_CREATED)
 
 
 class AuthorizeView(APIView):
@@ -26,7 +28,7 @@ class AuthorizeView(APIView):
 
     def get(self, request):
         if request.user.is_anonymous:
-            return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_403_FORBIDDEN)
         return Response(
             headers={
                 'x-name': request.user.first_name,
@@ -35,3 +37,10 @@ class AuthorizeView(APIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+class ListDoctorAPIView(ListAPIView):
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
+    serializer_class = ProfileSerializer
+    queryset = UserModel.objects.filter(role=UserRole.DOCTOR)
