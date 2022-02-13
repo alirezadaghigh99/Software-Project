@@ -1,12 +1,16 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic import FormView, ListView
 
-# Create your views here.
 from doctor.forms import DoctorRegisterForm, DoctorLoginForm
 from patient.models import UserModel, UserRole, Visit, VisitStatus
+
+
+# Create your views here.
 
 
 class DoctorSignupPage(FormView):
@@ -36,16 +40,17 @@ def login_page(request):
     return render(request, 'doctor/doctor_login.html', {'form': form})
 
 
-class PublisherListView(ListView):
-    model = Visit
-    template_name = 'doctor/visit_request_list.html'
-
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('doctor:login'))
 
 
+class PublisherListView(LoginRequiredMixin, ListView):
+    model = Visit
+    template_name = 'doctor/visit_request_list.html'
+
+
+@login_required
 def accept_reject_visit(request, visit_id, accept):
     visit = get_object_or_404(Visit, pk=visit_id)
     if accept:
