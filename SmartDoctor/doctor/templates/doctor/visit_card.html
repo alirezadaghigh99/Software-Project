@@ -6,8 +6,8 @@
         <h5 class="card-title"> {{ visit.time }}</h5>
         <p class="card-text"></p>
         {% if visit.status == 'pending' %}
-        <a href="hh" class="card-link" style="color: #1e7e34">{% trans "accept" %}</a>
-        <a href="hh" class="card-link" style="color: #bd2130">{% trans "reject" %}</a>
+        <a href="{% url 'doctor:accept-reject-visit' visit_id=visit.id accept=1 %}" class="card-link" style="color: #1e7e34">{% trans "accept" %}</a>
+        <a href="{% url 'doctor:accept-reject-visit' visit_id=visit.id accept=0 %}" class="card-link" style="color: #bd2130">{% trans "reject" %}</a>
         {% endif %}
     </div>
 </div>
