@@ -35,8 +35,9 @@ def login_page(request):
         username = form.cleaned_data.get("username")
         password = form.cleaned_data.get("password")
         user = authenticate(username=username, password=password)
-        login(request, user)
-        return HttpResponseRedirect(reverse('doctor:visit-request-list'))
+        if user:
+            login(request, user)
+            return HttpResponseRedirect(reverse('doctor:visit-request-list'))
     return render(request, 'doctor/doctor_login.html', {'form': form})
 
 
