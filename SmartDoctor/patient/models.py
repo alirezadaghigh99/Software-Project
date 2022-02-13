@@ -31,8 +31,8 @@ class Visit(models.Model):
     doctor = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='doctor_visit')
     patient = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='patient_visit')
     status = models.CharField(max_length=10, choices=VisitStatus.choices, default=VisitStatus.PENDING)
-    time = models.CharField(max_length=60)
+    time = models.DateTimeField()
 
     @property
-    def status(self):
+    def status_string(self):
         return self.status
