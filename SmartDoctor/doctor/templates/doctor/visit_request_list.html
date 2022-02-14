@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+
+{% block title %}
+<li class="breadcrumb-item active">{% trans "Visit Requests" %}</li>
+{% endblock %}
+
+
+{% block content %}
+<ul>
+    <div>Pending Requests</div>
+    {% for visit in object_list %}
+    {% if visit.status == 'pending' %}
+    {% include 'doctor/visit_card.html' with visit=visit %}
+    {% endif %}
+    {% endfor %}
+</ul>
+<ul>
+    <div>Accepted Requests</div>
+    {% for visit in object_list %}
+    {% if visit.status == 'accept' %}
+    {% include 'doctor/visit_card.html' with visit=visit %}
+    {% endif %}
+    {% endfor %}
+</ul>
+<ul>
+    <div>Rejected Requests</div>
+    {% for visit in object_list %}
+    {% if visit.status == 'reject' %}
+    {% include 'doctor/visit_card.html' with visit=visit %}
+    {% endif %}
+    {% endfor %}
+</ul>
+
+
+{% endblock %}
