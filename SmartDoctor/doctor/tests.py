@@ -16,6 +16,7 @@ class VisitListTest(APITestCase):
         self.doctor_user.set_password("123456")
         self.doctor_user.save()
 
+
         self.client = APIClient()
         self.client.login(username='doctor_user', password='123456')
         self.client.force_authenticate(user=self.doctor_user)
