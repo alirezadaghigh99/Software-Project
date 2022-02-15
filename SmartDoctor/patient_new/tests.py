@@ -76,14 +76,14 @@ class DoctorListTest(APITestCase):
         self.client.login(username='p3', password='123456')
         self.client.force_authenticate(user=self.patient)
 
-    def test_visit_list_success(self):
+    def test_doctor_list_success(self):
         """
         tests if a authenticated user can access the visit list
         """
         response = self.client.get(self.doctor_list_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_visit_list_fail_for_unauthenticated_user(self):
+    def test_doctor_list_fail_for_unauthenticated_user(self):
         """
         tests if a unauthenticated user can NOT access the list
         """
