@@ -18,6 +18,7 @@ def register(request):
     if request.method == 'POST':
         details = PatientRegisterForm(request.POST)
         if details.is_valid():
+            print("salammmmm")
             user = details.save(commit=False)
             user.set_password(request.POST['password1'])
             user.save()
@@ -25,7 +26,7 @@ def register(request):
 
         else:
 
-            return render(request, "patient/signup.html", {'form': details})
+            return render(request, "patient/signup.html", {'form': details} ,status=400)
     else:
         form = PatientRegisterForm(None)
         return render(request, 'patient/signup.html', {'form': form})
@@ -42,7 +43,6 @@ def login_view(request):
         if user:
             login(request, user)
             return HttpResponseRedirect(reverse('patient_new:doctor-list'))
-    print(form.errors)
     return render(request, 'patient/login.html', {'form': form})
 
 
