@@ -4,16 +4,12 @@ from patient.models import UserModel
 
 
 class PatientRegisterForm(forms.ModelForm):
-    password1 = forms.PasswordInput()
-    password2 = forms.PasswordInput()
+    password1 = forms.CharField(widget=forms.PasswordInput)
+    password2 = forms.CharField(widget=forms.PasswordInput)
 
     class Meta:
         model = UserModel
-        fields = ['username', 'first_name', 'last_name', 'password1', 'password2']
-        widgets = {
-            'password2': forms.PasswordInput(),
-            'password1': forms.PasswordInput(),
-        }
+        fields = ('username', 'first_name', 'last_name',)
 
     def clean(self):
         super(PatientRegisterForm, self).clean()
