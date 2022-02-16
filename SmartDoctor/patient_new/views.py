@@ -33,6 +33,8 @@ def register(request):
 
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect(reverse("patient_new:doctor-list"))
     form = PatientLoginForm(request.POST or None)
     if form.is_valid():
 

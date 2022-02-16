@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="exampleModal{{doctor.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -14,7 +14,6 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="recipient-name" class="col-form-label">Recipient:</label>
-                        {{doctor.first_name}}
                         <input type="text" class="form-control" id="recipient-name" value="{{doctor.first_name}}"
                                readonly>
                     </div>
@@ -57,12 +56,12 @@
 </div>
 <div class="card visit-card" style="width: auto;">
     <div class="card-body">
-        <h2 class="card-title"> {{doctor.username}} {{doctor.role}} {{ doctor.first_name }} {{doctor.last_name}}</h2>
+        <h2 class="card-title">{{doctor.role}} {{ doctor.first_name }} {{doctor.last_name}}</h2>
         <p class="card-text"></p>
                 <p class="card-text"></p>
         <p class="card-text"></p>
 
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
+        <button type="button"  class="btn btn-success" data-toggle="modal" data-target="#exampleModal{{doctor.id}}"
                 data-whatever="@mdo">make a new appointment
         </button>
     </div>
