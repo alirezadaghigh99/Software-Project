@@ -54,7 +54,9 @@ def logout_view(request):
 @login_required
 def doctors_list(request):
     doctors = UserModel.objects.filter(role=UserRole.DOCTOR)
-    return render(request, "patient/doctors-list.html", {"doctors": doctors})
+    user = request.user
+    visits = Visit.objects.filter(patient=user)
+    return render(request, "patient/doctors-list.html", {"doctors": doctors, "visits": visits})
 
 
 @login_required

@@ -1,5 +1,40 @@
 {% extends 'base-menuless.html' %}
 
 {% load static %}
-{% block content %}
+{% load i18n %}
+
+{% block menu %}
+<div style="padding: 50 50 50">
+    <h5>*\ Hello Patient /*</h5>
+</div>
+
+{% if user.is_authenticated %}
+<div class="navbar menu-item">
+    <a href="{% url 'patient_new:doctor-list' %}" class="btn btn-link text-menuitem">
+         {% trans "Doctors List" %}
+    </a>
+</div>
+{% endif %}
+{% if user.is_authenticated %}
+<hr class="sidebar-hr"/>
+<div class="navbar menu-item">
+    <a href="{% url 'patient_new:logout' %}" class="btn btn-link text-menuitem">
+        {% trans "logout" %} ({{ user.username }})
+    </a>
+</div>
+{% else %}
+<hr class="sidebar-hr"/>
+<div class="navbar menu-item">
+    <a href="{% url 'patient_new:login' %}" class="btn btn-link text-menuitem">
+        {% trans "login" %}
+    </a>
+</div>
+<hr class="sidebar-hr"/>
+<div class="navbar menu-item">
+    <a href="{% url 'patient_new:signup' %}" class="btn btn-link text-menuitem">
+        {% trans "register" %}
+    </a>
+</div>
+{% endif %}
+
 {% endblock %}

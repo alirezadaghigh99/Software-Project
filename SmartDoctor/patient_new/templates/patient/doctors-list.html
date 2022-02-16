@@ -15,74 +15,31 @@
 <link rel="stylesheet" type="text/css"
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 
-<ul class="list-group">
+<ul>
     {% for doctor in doctors %}
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="{% url 'patient_new:make_appointment' doctor_id=doctor.id%}">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Recipient:</label>
-                            <input type="text" class="form-control" id="recipient-name" value="{{doctor.first_name}}"
-                                   readonly>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="time" class="col-form-label">time</label>
-
-                            <div class='input-group date' id='datetimepicker1'>
-
-                                <input id="time" name="time" type='text' class="form-control"/>
-                                <span class="input-group-addon">
-                               <span class="glyphicon glyphicon-calendar"></span>
-                               </span>
-                            </div>
-                        </div>
-                        <script type="text/javascript">
-                             $(function () {
-             $('#datetimepicker1').datetimepicker();
-         });
-
-
-
-                        </script>
-
-
-                        <div class="form-group">
-                            <label for="message-text" class="col-form-label">Message:</label>
-                            <textarea class="form-control" id="message-text"></textarea>
-                        </div>
-                        <input type="submit" class="btn btn-primary" value="Save">
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <li class="list-group-item disabled">
-        {{doctor.role}}
-        {{doctor.first_name}}
-        {{doctor.last_name}}
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal"
-                data-whatever="@mdo">make a new appointment
-        </button>
-
-
-    </li>
+    {% include 'patient/doctor-card.html' with doctor=doctor %}
 
     {% endfor %}
 </ul>
+
+<ul>
+    <div>Accepted Requests</div>
+    {% for visit in visits %}
+    {% if visit.status == 'accept' %}
+    {% include 'patient/visit_card.html' with visit=visit %}
+    {% endif %}
+    {% endfor %}
+</ul>
+<ul>
+    <div>Pending Requests</div>
+    {% for visit in visits %}
+    {% if visit.status == 'pending' %}
+    {% include 'patient/visit_card.html' with visit=visit %}
+    {% endif %}
+    {% endfor %}
+</ul>
+
+
 {% endblock %}
